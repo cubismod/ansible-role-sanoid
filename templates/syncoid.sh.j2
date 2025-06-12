@@ -59,8 +59,8 @@
 {% if sync.recvoptions | default('') %}
   --recvoptions={{ sync.recvoptions }} \
 {% endif %}
-{% if sync.no_privilege_escalation | default(False) %}
-  --no-privilege-escalation \
+{% if sync.no_privilege_elevation | default(False) %}
+  --no-privilege-elevation \
 {% endif %}
 {% if sync.no_resume | default(False) %}
   --no-resume \
