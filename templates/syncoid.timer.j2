@@ -4,6 +4,7 @@ Description=Run Syncoid {{ syncoid_timer_frequency }}
 [Timer]
 OnCalendar={{ syncoid_timer_frequency }}
 Persistent=true
+RandomizedDelaySec={{ syncoid_timer_random_sec }}
 
 [Install]
 WantedBy=timers.target
