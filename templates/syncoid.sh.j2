@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
 
+echo "###### BEGIN ######"
 {% if syncoid_enable_healthchecks %}
-curl {{ healthcheck_syncoid }}/start
+curl -s --output /dev/null {{ healthcheck_syncoid }}/start
 {% endif %}
 {% for sync in syncoid_syncs %}
 {{ syncoid_path | default(syncoid_bin_path) }} \
@@ -88,5 +89,6 @@ curl {{ healthcheck_syncoid }}/start
 {% endfor %}
 
 {% if syncoid_enable_healthchecks %}
-curl {{ healthcheck_syncoid }}
+curl -s --output /dev/null {{ healthcheck_syncoid }}
 {% endif %}
+echo "###### END ######"
