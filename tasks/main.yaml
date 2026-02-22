@@ -56,20 +56,16 @@
             user: "{{ item.dest_user | default('root') }}"
             state: present
             key: "{{ user_info.ssh_public_key if syncoid_generate_ssh_key else lookup('file', syncoid_ssh_key) }}"
-          delegate_to: "{{ item.dest_host }}"
-          when: item.dest_host is defined
-          with_items:
-            - "{{ syncoid_syncs }}"
+          delegate_to: "{{ item['dest_host'] }}"
+          with_items: "{{ syncoid_syncs | selectattr('dest_host', 'defined') | list }}"
 
         - name: add SSH key to source authorized_keys
           ansible.posix.authorized_key:
             user: "{{ item.src_user | default('root') }}"
             state: present
             key: "{{ user_info.ssh_public_key if syncoid_generate_ssh_key else lookup('file', syncoid_ssh_key) }}"
-          delegate_to: "{{ item.src_host }}"
-          when: item.src_host is defined
-          with_items:
-            - "{{ syncoid_syncs }}"
+          delegate_to: "{{ item['src_host'] }}"
+          with_items: "{{ syncoid_syncs | selectattr('src_host', 'defined') | list }}"
       when: syncoid_ssh_key_install_remote
 
     - name: set up syncoid systemd service
